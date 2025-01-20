@@ -74,8 +74,19 @@ button:hover {
 .confidence-score {
     margin-top: 15px;
     padding: 10px;
-    background-color: #e8f5e9;
     border-radius: 4px;
+}
+
+.confidence-high {
+    background-color: #4caf4fa9;
+}
+
+.confidence-medium {
+    background-color: #edcb46;
+}
+
+.confidence-low {
+    background-color: #f56f60;
 }
 
 .taxonomy-list {

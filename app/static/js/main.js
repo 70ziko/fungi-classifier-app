@@ -8,6 +8,8 @@ document.getElementById('image-input').addEventListener('change', (e) => {
     document.getElementById('common-name').textContent = '';
     document.getElementById('taxonomy-list').innerHTML = '';
     document.getElementById('confidence').textContent = '';
+    document.getElementById('confidence').parentElement.classList.remove('confidence-high', 'confidence-medium', 'confidence-low');
+
     resultDiv.classList.add('hidden');
     
     if (file) {
@@ -59,8 +61,19 @@ document.getElementById('upload-form').addEventListener('submit', async (e) => {
                 <li>Genus: ${speciesInfo.genus}</li>
             `;
             
-            document.getElementById('confidence').textContent = 
-                `Confidence: ${(result.score * 100).toFixed(2)}%`;
+            const confidenceElement = document.getElementById('confidence');
+            const confidenceScore = result.score * 100;
+            confidenceElement.textContent = `Confidence: ${confidenceScore.toFixed(2)}%`;
+            
+            confidenceElement.parentElement.classList.remove('confidence-high', 'confidence-medium', 'confidence-low');
+            
+            if (confidenceScore >= 80) {
+                confidenceElement.parentElement.classList.add('confidence-high');
+            } else if (confidenceScore >= 45) {
+                confidenceElement.parentElement.classList.add('confidence-medium');
+            } else {
+                confidenceElement.parentElement.classList.add('confidence-low');
+            }
             
         } else {
             alert(`Error: ${result.error}`);
