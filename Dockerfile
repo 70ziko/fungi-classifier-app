@@ -20,7 +20,6 @@ COPY . .
 
 # Create required directories
 RUN mkdir -p uploads
-RUN mkdir -p app/models/fungi-classifier
 
 # Set environment variables
 ENV FLASK_APP=app

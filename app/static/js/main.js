@@ -2,13 +2,19 @@ document.getElementById('image-input').addEventListener('change', (e) => {
     const file = e.target.files[0];
     const previewContainer = document.getElementById('preview-container');
     const imagePreview = document.getElementById('image-preview');
-    document.getElementById('result').classList.add('hidden');
+    const resultDiv = document.getElementById('result');
+    
+    document.getElementById('scientific-name').textContent = '';
+    document.getElementById('common-name').textContent = '';
+    document.getElementById('taxonomy-list').innerHTML = '';
+    document.getElementById('confidence').textContent = '';
+    resultDiv.classList.add('hidden');
     
     if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
             imagePreview.src = e.target.result;
-            previewContainer.classList.remove('hidden');
+            previewContainer && previewContainer.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
     } else {
