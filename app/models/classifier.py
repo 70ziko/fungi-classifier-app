@@ -1,3 +1,4 @@
+from app.utils.species_lookup import SpeciesLookup
 from abc import ABC, abstractmethod
 import torch
 import timm
@@ -29,10 +30,9 @@ class HFAPIClassifier(BaseClassifier):
 
 class LocalClassifier(BaseClassifier):
     def __init__(self, model_path, model_file: str = "best_f1.pth"):
-        # Load model using timm
+        self.species_lookup = SpeciesLookup()
         self.model = timm.create_model('vit_base_patch16_224', pretrained=False, num_classes=1604)
         
-        # Load state dict
         state_dict = torch.load(os.path.join(model_path, model_file), map_location='cpu')
         self.model.load_state_dict(state_dict)
         
@@ -40,7 +40,6 @@ class LocalClassifier(BaseClassifier):
         self.model.to(self.device)
         self.model.eval()
 
-        # Setup preprocessing pipeline
         self.transform = A.Compose([
             A.Resize(224, 224),
             A.Normalize(
@@ -51,11 +50,9 @@ class LocalClassifier(BaseClassifier):
         ])
 
     def predict(self, image_path):
-        # Read image using OpenCV
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
-        # Apply transformations
         transformed = self.transform(image=image)
         input_tensor = transformed['image'].unsqueeze(0).to(self.device)
         
@@ -63,14 +60,13 @@ class LocalClassifier(BaseClassifier):
             outputs = self.model(input_tensor)
             probs = torch.nn.functional.softmax(outputs, dim=1)
             
-        # Get prediction
         pred_idx = probs[0].argmax().item()
         confidence = probs[0].max().item()
         
-        # Map index to label (you'll need to provide a mapping file)
-        # For now, return the index
+        species_info = self.species_lookup.get_species_info(pred_idx)
+        
         return {
-            "label": f"class_{pred_idx}",
+            "species_info": species_info,
             "score": confidence
         }
 

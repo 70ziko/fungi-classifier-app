@@ -9,15 +9,29 @@
         <h1>Fungi Classifier</h1>
         <form id="upload-form" enctype="multipart/form-data">
             <input type="file" id="image-input" accept=".jpg,.jpeg,.png">
-            <div id="preview-container" class="hidden">
-                <img id="image-preview" alt="Preview">
-            </div>
             <button type="submit">Classify</button>
         </form>
-        <div id="result" class="hidden">
-            <h2>Result:</h2>
-            <p id="prediction"></p>
-            <p id="confidence"></p>
+        
+        <div class="results-container hidden" id="result">
+            <div class="image-section">
+                <img id="image-preview" alt="Mushroom preview">
+            </div>
+            
+            <div class="info-section">
+                <div class="species-info">
+                    <h3>Species Information</h3>
+                    <p class="scientific-name" id="scientific-name"></p>
+                    <p id="common-name"></p>
+                    
+                    <h4>Taxonomy:</h4>
+                    <ul class="taxonomy-list" id="taxonomy-list">
+                    </ul>
+                    
+                    <div class="confidence-score">
+                        <p id="confidence"></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
