@@ -71,14 +71,14 @@ The application supports two modes of operation:
 To run the application:
 
 1. Create a Python virtual environment
-  - using Conda
+- using Conda
 ```bash
 conda create -n fungi python=3.9
 conda activate fungi
 # conda install --file requirements.txt
 pip install -r requirements.txt
 ```
-  - or using venv
+- or using venv
 ```bash
 python -m venv fungi-env
 source fungi-env/bin/activate  # On Windows use `fungi-env\Scripts\activate`
@@ -103,10 +103,11 @@ And replace the values with yours.
 
 ### Local vs API mode
 The `MODEL_TYPE` envvar controls the way inference in the application works:
-- For 'local' the weights in `/app/models/weights/best_f1.pth` will be used, which can be changed in the code.
+- For 'local' the weights in `/app/models/weights/exp1/best_f1.pth` will be used, which can be changed in the code.
 - For 'api' a valid Hugging Face API key is needed and a model_id with handler.py defined
 
 ### Environment Variables
+- `SECRET_KEY`: Signing Session key (also other, like CSRF protection when implemented) 
 - `FLASK_APP`: Application entry point
 - `FLASK_ENV`: Development/Production mode
 - `MODEL_TYPE`: Local/API inference mode

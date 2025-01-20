@@ -28,12 +28,12 @@ class HFAPIClassifier(BaseClassifier):
         return response.json()
 
 class LocalClassifier(BaseClassifier):
-    def __init__(self, model_path):
+    def __init__(self, model_path, model_file: str = "best_f1.pth"):
         # Load model using timm
         self.model = timm.create_model('vit_base_patch16_224', pretrained=False, num_classes=1604)
         
         # Load state dict
-        state_dict = torch.load(os.path.join(model_path, 'best_f1.pth'), map_location='cpu')
+        state_dict = torch.load(os.path.join(model_path, model_file), map_location='cpu')
         self.model.load_state_dict(state_dict)
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -81,5 +81,5 @@ def get_classifier(config):
         return HFAPIClassifier(config['HF_MODEL_ID'], config['HF_API_TOKEN'])
     else:
         if not os.path.exists(config['MODEL_PATH']):
-            raise ValueError(f"Model not found at {config['MODEL_PATH']}")
+            raise ValueError(f"Model not found at {config['MODEL_PATH'], config['MODEL_FILE']}")
         return LocalClassifier(config['MODEL_PATH'])

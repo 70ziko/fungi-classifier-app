@@ -10,6 +10,7 @@ class Config:
     # Model settings
     MODEL_TYPE = os.environ.get('MODEL_TYPE', 'api')  # 'api' or 'local'
     MODEL_PATH = os.environ.get('MODEL_PATH', 'models/fungi-classifier')
+    MODEL_FILE = os.environ.get('MODEL_FILE', 'best_f1.pth')
     HF_API_TOKEN = os.environ.get('HF_API_TOKEN')
     HF_MODEL_ID = os.environ.get('HF_MODEL_ID', '70ziko/fungi-classifier')
     
