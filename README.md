@@ -70,7 +70,31 @@ The application supports two modes of operation:
 
 To run the application:
 
-1. Set environment variables
+1. Create a Python virtual environment
+  - using Conda
+```bash
+conda create -n fungi python=3.9
+conda activate fungi
+# conda install --file requirements.txt
+pip install -r requirements.txt
+```
+  - or using venv
+```bash
+python -m venv fungi-env
+source fungi-env/bin/activate  # On Windows use `fungi-env\Scripts\activate`
+pip install -r requirements.txt
+```
+
+2. Download the model weights:
+```bash
+# Install required packages
+pip install requests tqdm
+
+# Run the download script
+python scripts/download_model.py
+```
+
+3. Set environment variables
 ```bash
 cd fungi-classifier-app
 cp .env.template .env
@@ -90,15 +114,17 @@ The `MODEL_TYPE` envvar controls the way inference in the application works:
 - `HF_MODEL_ID`: Hugging Face model identifier
 - `MODEL_PATH`: Local model weights path
 
-2. Run the application
+
+4. Run the application
 ```bash
 flask run
 ```
 
 For containerized deployment:
+(download weights first)
 ```bash
-docker build -t fungi-classifier -f docker/Dockerfile .
-docker run -p 5000:5000 -e HF_API_TOKEN=your_token fungi-classifier
+docker build -t fungi-classifier -f Dockerfile .
+docker run -p 5000:5000 fungi-classifier
 ```
 
 ## Features
@@ -118,3 +144,4 @@ Key dependencies are managed through requirements.txt and include:
 - Development and utility tools
 
 For the complete list of dependencies, see requirements.txt.
+````
